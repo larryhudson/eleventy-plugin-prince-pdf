@@ -15,7 +15,7 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
     // Exit early if no paths supplied
     if (!options.pathsToRender || !options.pathsToRender.length > 0) {
       console.error(
-        "[eleventy-plugin-prince-pdf] ERROR: Please provide PDF paths to render as array of {htmlPath, outputPath}"
+        "[eleventy-plugin-prince-pdf] ERROR: Provide pathsToRender as array of {htmlPath, outputPath}"
       );
       return;
     }
@@ -24,15 +24,15 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
     // (instead of HTML files on filesystem)
     const fileServer = new nodeStaticServer.Server(eleventyConfig.dir.output);
 
-    http
-      .createServer(function (request, response) {
-        request
-          .addListener("end", function () {
-            fileServer.serve(request, response);
-          })
-          .resume();
-      })
-      .listen(options.serverPort);
+    const princeServer = http.createServer(function (request, response) {
+      request
+        .addListener("end", function () {
+          fileServer.serve(request, response);
+        })
+        .resume();
+    });
+
+    princeServer.listen(options.serverPort);
 
     // Map through
     await Promise.all(
@@ -44,7 +44,7 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
           .option("pdf-profile", "PDF/UA-1")
           .execute()
           .then(
-            function ({ stdout }) {
+            function () {
               console.log(
                 `[eleventy-plugin-prince-pdf]: Wrote ${fullOutputPath} from ${htmlPath}`
               );
@@ -55,5 +55,7 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
           );
       })
     );
+
+    princeServer.destroy();
   });
 };
