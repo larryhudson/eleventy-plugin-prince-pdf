@@ -56,6 +56,6 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
       })
     );
 
-    princeServer.destroy();
+    princeServer.close();
   });
 };
