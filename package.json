@@ -1,0 +1,18 @@
+{
+  "name": "eleventy-plugin-prince-pdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eleventy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^1.0.0",
+    "lodash.merge": "^4.6.2",
+    "node-static": "^0.7.11",
+    "prince": "^1.9.5"
+  }
+}
