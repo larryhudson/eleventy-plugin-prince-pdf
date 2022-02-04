@@ -2,6 +2,7 @@ const nodeStaticServer = require("node-static");
 const Prince = require("prince");
 const http = require("http");
 const lodashMerge = require("lodash.merge");
+const util = require("util");
 
 const globalOptions = {
   serverPort: 8080,
@@ -35,7 +36,7 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
 
     // Map through
     await Promise.all(
-      pathsToOutputPdf.map(async ({ htmlPath, outputPath }) => {
+      options.pathsToRender.map(async ({ htmlPath, outputPath }) => {
         const fullOutputPath = `${eleventyConfig.dir.output}${outputPath}`;
         await Prince()
           .inputs(`http://localhost:8080${htmlPath}`)
