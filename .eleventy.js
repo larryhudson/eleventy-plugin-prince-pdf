@@ -5,7 +5,7 @@ const lodashMerge = require("lodash.merge");
 const util = require("util");
 
 const globalOptions = {
-  serverPort: 8080,
+  serverPort: 8090,
 };
 
 module.exports = function (eleventyConfig, suppliedOptions = {}) {
@@ -39,7 +39,7 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
       options.pathsToRender.map(async ({ htmlPath, outputPath }) => {
         const fullOutputPath = `${eleventyConfig.dir.output}${outputPath}`;
         await Prince()
-          .inputs(`http://localhost:8080${htmlPath}`)
+          .inputs(`http://localhost:${options.serverPort}${htmlPath}`)
           .output(fullOutputPath)
           .option("pdf-profile", "PDF/UA-1")
           .execute()
