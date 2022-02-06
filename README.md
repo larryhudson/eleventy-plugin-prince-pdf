@@ -30,6 +30,7 @@ module.exports = function (eleventyConfig) {
       { htmlPath: "/hello/", outputPath: "/hello.pdf" },
       { htmlPath: "/another-pdf-page/", outputPath: "/another-pdf.pdf" },
     ],
+    serverPort: 8090 // optional - set port of prince web server
   });
 ```
 
@@ -37,6 +38,8 @@ For each page in `pathsToRender`:
 
 - `htmlPath` should be a absolute path (starting with a `/`), pointing to the webpage that you want to convert to PDF. For example, `/hello/` will try to convert `[OUTPUT_DIR]/hello/index.html`.
 - `outputPath` should be a absolute path (starting with a `/`), relative to your output directory. This is where the PDF will be written to.
+
+The `serverPort` option can be used to set the port of the web server that Prince uses when it is converting HTML to PDF. The server port defaults to `8090`.
 
 ## Configuration
 
