@@ -3,6 +3,7 @@ const Prince = require("prince");
 const http = require("http");
 const lodashMerge = require("lodash.merge");
 const util = require("util");
+const path = require("path");
 
 const globalOptions = {
   serverPort: 8090,
@@ -19,10 +20,12 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
       );
       return;
     }
+    
+    const htmlOutputDir = options.htmlOutputDir || eleventyConfig.dir.output
 
     // Need to run a local web server because Prince works best with HTML URLs
     // (instead of HTML files on filesystem)
-    const fileServer = new nodeStaticServer.Server(eleventyConfig.dir.output);
+    const fileServer = new nodeStaticServer.Server(htmlOutputDir);
 
     const princeServer = http.createServer(function (request, response) {
       request
@@ -37,7 +40,7 @@ module.exports = function (eleventyConfig, suppliedOptions = {}) {
     // Map through
     await Promise.all(
       options.pathsToRender.map(async ({ htmlPath, outputPath }) => {
-        const fullOutputPath = `${eleventyConfig.dir.output}${outputPath}`;
+        const fullOutputPath = path.join(htmlOutputDir, outputPath)
         await Prince()
           .inputs(`http://localhost:${options.serverPort}${htmlPath}`)
           .output(fullOutputPath)
